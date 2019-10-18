@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.CompanyInfo">
+    <id column="company_id" jdbcType="BIGINT" property="companyId" />
+    <result column="company_number" jdbcType="VARCHAR" property="companyNumber" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="registered_place" jdbcType="VARCHAR" property="registeredPlace" />
+    <result column="credit_rating" jdbcType="VARCHAR" property="creditRating" />
+    <result column="corporate_representative" jdbcType="VARCHAR" property="corporateRepresentative" />
+    <result column="permanent_assets" jdbcType="VARCHAR" property="permanentAssets" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="telephone" jdbcType="BIGINT" property="telephone" />
+    <result column="textarea" jdbcType="VARCHAR" property="textarea" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    company_id, company_number, company_name, registered_place, credit_rating, corporate_representative,
+    permanent_assets, email, fax, contact, telephone, textarea, create_user_name, create_time,
+    status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from company_info
+    where company_id = #{companyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from company_info
+    where company_id = #{companyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.CompanyInfo">
+    <selectKey keyProperty="companyId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into company_info (company_number, company_name, registered_place,
+      credit_rating, corporate_representative,
+      permanent_assets, email, fax,
+      contact, telephone, textarea,
+      create_user_name, create_time, status
+      )
+    values (#{companyNumber,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{registeredPlace,jdbcType=VARCHAR},
+      #{creditRating,jdbcType=VARCHAR}, #{corporateRepresentative,jdbcType=VARCHAR},
+      #{permanentAssets,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR},
+      #{contact,jdbcType=VARCHAR}, #{telephone,jdbcType=BIGINT}, #{textarea,jdbcType=VARCHAR},
+      #{createUserName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.CompanyInfo">
+    <selectKey keyProperty="companyId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into company_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="companyNumber != null">
+        company_number,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="registeredPlace != null">
+        registered_place,
+      </if>
+      <if test="creditRating != null">
+        credit_rating,
+      </if>
+      <if test="corporateRepresentative != null">
+        corporate_representative,
+      </if>
+      <if test="permanentAssets != null">
+        permanent_assets,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="textarea != null">
+        textarea,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="companyNumber != null">
+        #{companyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredPlace != null">
+        #{registeredPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="creditRating != null">
+        #{creditRating,jdbcType=VARCHAR},
+      </if>
+      <if test="corporateRepresentative != null">
+        #{corporateRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentAssets != null">
+        #{permanentAssets,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=BIGINT},
+      </if>
+      <if test="textarea != null">
+        #{textarea,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.CompanyInfo">
+    update company_info
+    <set>
+      <if test="companyNumber != null">
+        company_number = #{companyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredPlace != null">
+        registered_place = #{registeredPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="creditRating != null">
+        credit_rating = #{creditRating,jdbcType=VARCHAR},
+      </if>
+      <if test="corporateRepresentative != null">
+        corporate_representative = #{corporateRepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentAssets != null">
+        permanent_assets = #{permanentAssets,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=BIGINT},
+      </if>
+      <if test="textarea != null">
+        textarea = #{textarea,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where company_id = #{companyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.CompanyInfo">
+    update company_info
+    set company_number = #{companyNumber,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      registered_place = #{registeredPlace,jdbcType=VARCHAR},
+      credit_rating = #{creditRating,jdbcType=VARCHAR},
+      corporate_representative = #{corporateRepresentative,jdbcType=VARCHAR},
+      permanent_assets = #{permanentAssets,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=BIGINT},
+      textarea = #{textarea,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT}
+    where company_id = #{companyId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from company_info
+  </select>
+</mapper>
