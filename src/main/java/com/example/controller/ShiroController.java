@@ -32,28 +32,31 @@ public class ShiroController {
     }
 
     @GetMapping("/menu/list")
- //   @RequiresPermissions("sys:user:shiro3")
     @RequiresAuthentication
+ //   @RequiresPermissions("sys:user:shiro")
     public Map<String, List> list(){
         return shiroService.getMenu();
     }
 
     @GetMapping("/menu/userList")
+    @RequiresAuthentication
     public List<UserInfo> getUserList() {
         return shiroService.getUserList();
     }
 
     @RequestMapping("/menu/list1")
+    @RequiresAuthentication
     public Map RouterDemo(){
         return shiroService.routerDemo();
     }
 
     @PutMapping("/user/delete")
+    @RequiresAuthentication
     public void changeStatus(@RequestParam(value = "userId")Long userId) {
         shiroService.deleteUser(userId);
     }
 
-    @RequestMapping("/userLogOut")
+    @GetMapping("/userLogOut")
     public String logout (){
         SecurityUtils.getSubject().logout();
         return "success" ;

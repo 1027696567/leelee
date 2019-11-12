@@ -1,6 +1,7 @@
 package com.example.config;
 
 import com.alibaba.druid.util.StringUtils;
+import org.apache.catalina.SessionListener;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Component
 public class CustomSessionManager extends DefaultWebSessionManager {
 
@@ -20,10 +24,16 @@ public class CustomSessionManager extends DefaultWebSessionManager {
 
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 
+
     public CustomSessionManager() {
         super();
-        setGlobalSessionTimeout(DEFAULT_GLOBAL_SESSION_TIMEOUT * 48);
+        //15分钟，10s=10000L,设置为900000L
+        setGlobalSessionTimeout(900000L);
+        //是否开启定时调度器进行检测过期session 默认为true
+        setSessionValidationSchedulerEnabled(true);
+        // 去掉shiro登录时url里的JSESSIONID
         setSessionIdUrlRewritingEnabled(false);
+
     }
 
     @Override

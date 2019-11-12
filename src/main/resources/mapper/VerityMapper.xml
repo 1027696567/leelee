@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.VerityMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.VerityInfo">
+    <id column="verity_id" jdbcType="BIGINT" property="verityId" />
+    <result column="classify" jdbcType="VARCHAR" property="classify" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="textarea" jdbcType="VARCHAR" property="textarea" />
+    <result column="company_id" jdbcType="BIGINT" property="companyId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    verity_id, classify, grade, textarea, company_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verity_info
+    where verity_id = #{verityId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByCompanyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verity_info
+    where company_id = #{companyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from verity_info
+    where verity_id = #{verityId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByCompanyId" parameterType="java.lang.Long">
+    delete from verity_info
+    where company_id = #{companyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.VerityInfo">
+    <selectKey keyProperty="verityId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into verity_info (classify, grade, textarea,
+      company_id)
+    values (#{classify,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{textarea,jdbcType=VARCHAR},
+      #{companyId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.VerityInfo">
+    <selectKey keyProperty="verityId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into verity_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classify != null">
+        classify,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="textarea != null">
+        textarea,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classify != null">
+        #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="textarea != null">
+        #{textarea,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.VerityInfo">
+    update verity_info
+    <set>
+      <if test="classify != null">
+        classify = #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="textarea != null">
+        textarea = #{textarea,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where verity_id = #{verityId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.VerityInfo">
+    update verity_info
+    set classify = #{classify,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      textarea = #{textarea,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=BIGINT}
+    where verity_id = #{verityId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -19,4 +19,6 @@ public interface CompanyMapper {
     int updateByPrimaryKey(CompanyInfo record);
 
     List<CompanyInfo> selectAll();
+
+    CompanyInfo selectByNumber(String companyNumber);
 }
