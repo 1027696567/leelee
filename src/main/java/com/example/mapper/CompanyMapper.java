@@ -21,4 +21,6 @@ public interface CompanyMapper {
     List<CompanyInfo> selectAll();
 
     CompanyInfo selectByNumber(String companyNumber);
+
+    CompanyInfo selectByUsername(String username);
 }

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ItemMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.ItemInfo">
+    <id column="item_id" jdbcType="BIGINT" property="itemId" />
+    <result column="item_number" jdbcType="VARCHAR" property="itemNumber" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="item_classes" jdbcType="VARCHAR" property="itemClasses" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="reference_price" jdbcType="VARCHAR" property="referencePrice" />
+    <result column="least_number" jdbcType="VARCHAR" property="leastNumber" />
+    <result column="bidding_way" jdbcType="VARCHAR" property="biddingWay" />
+    <result column="bidding_way_id" jdbcType="BIGINT" property="biddingWayId" />
+    <result column="bidding_way_name" jdbcType="TINYINT" property="biddingWayName" />
+    <result column="item_classes_id" jdbcType="BIGINT" property="itemClassesId" />
+    <result column="item_classes_name" jdbcType="TINYINT" property="itemClassesName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    item_id, item_number, item_name, item_classes, username, address, email, contact,
+    telephone, fax, begin_time, end_time, status, reference_price, least_number, bidding_way
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from item_info
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </select>
+    <select id="selectByItemNumber" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from item_info
+      where item_number = #{itemNumber,jdbcType=VARCHAR}
+    </select>
+  <select id="selectAllItemInfo" resultMap="BaseResultMap">
+    SELECT *
+    FROM
+    ((item_info a LEFT JOIN item_classes_info b ON a.item_classes = b.item_classes_id)
+    LEFT JOIN bidding_way_info c ON a.bidding_way = c.bidding_way_id)
+  </select>
+  <select id="selectFinish" resultMap="BaseResultMap">
+    select *
+    from item_info
+    where status = 2
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from item_info
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.ItemInfo">
+    <selectKey keyProperty="itemId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into item_info (item_number, item_name, item_classes,
+      username, address, email,
+      contact, telephone, fax,
+      begin_time, end_time, status,
+      reference_price, least_number, bidding_way
+      )
+    values (#{itemNumber,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, #{itemClasses,jdbcType=VARCHAR},
+      #{username,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{contact,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR},
+      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+      #{referencePrice,jdbcType=VARCHAR}, #{leastNumber,jdbcType=VARCHAR}, #{biddingWay,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.ItemInfo">
+    <selectKey keyProperty="itemId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into item_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="itemNumber != null">
+        item_number,
+      </if>
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="itemClasses != null">
+        item_classes,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="referencePrice != null">
+        reference_price,
+      </if>
+      <if test="leastNumber != null">
+        least_number,
+      </if>
+      <if test="biddingWay != null">
+        bidding_way,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="itemNumber != null">
+        #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemClasses != null">
+        #{itemClasses,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="referencePrice != null">
+        #{referencePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="leastNumber != null">
+        #{leastNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="biddingWay != null">
+        #{biddingWay,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.ItemInfo">
+    update item_info
+    <set>
+      <if test="itemNumber != null">
+        item_number = #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemClasses != null">
+        item_classes = #{itemClasses,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="referencePrice != null">
+        reference_price = #{referencePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="leastNumber != null">
+        least_number = #{leastNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="biddingWay != null">
+        bidding_way = #{biddingWay,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.ItemInfo">
+    update item_info
+    set item_number = #{itemNumber,jdbcType=VARCHAR},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      item_classes = #{itemClasses,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      reference_price = #{referencePrice,jdbcType=VARCHAR},
+      least_number = #{leastNumber,jdbcType=VARCHAR},
+      bidding_way = #{biddingWay,jdbcType=VARCHAR}
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </update>
+</mapper>

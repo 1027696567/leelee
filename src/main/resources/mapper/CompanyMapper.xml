@@ -223,4 +223,10 @@
     from company_info
     where company_number = #{companyNumber,jdbcType=VARCHAR}
   </select>
+  <select id="selectByUsername" resultMap="BaseResultMap">
+    select
+    company_Id, company_number, company_name, create_user_name
+    from company_info
+    where create_user_name = #{username,jdbcType=VARCHAR}
+  </select>
 </mapper>

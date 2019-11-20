@@ -1,8 +1,7 @@
 package com.example.controller;
 
 import com.alibaba.druid.stat.DruidDataSourceStatManager;
-import com.example.model.CompanyInfo;
-import com.example.model.VerityInfo;
+import com.example.model.*;
 import com.example.service.CompanyService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
@@ -85,10 +84,95 @@ public class CompanyController {
 
     @DeleteMapping("/company/deleteCompanyInfo")
     @RequiresPermissions("sys:user:shiro")
-    public Integer deleteCompanyInfo(@RequestParam("companyId") Long companyId){
+    public Integer deleteCompanyInfo(@RequestParam("companyId") Long companyId) {
         return companyService.deleteCompanyInfo(companyId);
     }
 
+    @PostMapping("/company/addItemInfo")
+    @RequiresPermissions("sys:user:shiro")
+    public Integer addItemInfo(@RequestBody ItemInfo itemInfo) {
+        return companyService.addItemInfo(itemInfo);
+    }
+
+    @GetMapping("/company/selectAllItemInfo")
+    @RequiresAuthentication
+    public List<ItemInfo> selectAllItemInfo() {
+        return companyService.selectAllItemInfo();
+    }
+
+    @GetMapping("/company/selectFinish")
+    @RequiresAuthentication
+    public List<ItemInfo> selecatFinish() {
+        return companyService.selectFinish();
+    }
+
+    @PutMapping("/company/updateItemInfo")
+    @RequiresPermissions("sys:user:shiro")
+    public Integer updateItemInfo(@RequestBody ItemInfo itemInfo) {
+        return companyService.updateItemInfo(itemInfo);
+    }
+
+    @GetMapping("/company/selectUserCompanyInfo")
+    @RequiresAuthentication
+    public CompanyInfo selectUserCompanyInfo(@RequestParam("username")String username) {
+        return companyService.selectUserCompanyInfo(username);
+    }
+
+    @PostMapping("/company/addTender")
+    @RequiresPermissions("sys:user:shiro")
+    public Integer addTender(@RequestBody TenderInfo tenderInfo) {
+        return companyService.addTenderInfo(tenderInfo);
+    }
+
+    @GetMapping("/company/verityTender")
+    @RequiresPermissions("sys:user:shiro")
+    public String selectTenderByUserAndItem(@RequestParam("username")String username,
+                                            @RequestParam("itemId")Long itemId,HttpServletResponse httpServletResponse) {
+        return companyService.selectTenderByUserAndItem(httpServletResponse,username,itemId);
+    }
+
+    @DeleteMapping("/company/deleteItemInfo")
+    @RequiresPermissions("sys:user:shiro")
+    public Integer deleteItemInfo(@RequestParam("itemId")Long itemId) {
+        return companyService.deleteItemInfo(itemId);
+    }
+
+    @GetMapping("/company/selectTenderTable")
+    @RequiresAuthentication
+    public List<TenderTable> selectTenderTable(@RequestParam("itemId")Long itemId) {
+        return companyService.selectTenderTable(itemId);
+    }
+
+    @GetMapping("/company/selectNoticeInfo")
+    @RequiresAuthentication
+    public List<NoticeInfo> selectAllNoticeInfo() {
+        return companyService.selectAllNoticeInfo();
+    }
+
+    @PostMapping("/company/insertNoticeInfo")
+    @RequiresAuthentication
+    public Integer insertNoticeInfo(@RequestBody NoticeInfo noticeInfo) {
+        return companyService.insertNoticeInfo(noticeInfo);
+    }
+
+    @PutMapping("/company/updateNoticeInfo")
+    @RequiresPermissions("sys:user:shiro")
+    public Integer updateNoticeInfo(@RequestBody NoticeInfo noticeInfo) {
+        return companyService.updateNoticeInfo(noticeInfo);
+    }
+
+    @GetMapping("/company/selectNoticeForm")
+    @RequiresAuthentication
+    public NoticeForm selectNoticeForm(@RequestParam("username")String username) {
+        return companyService.selectNoticeForm(username);
+    }
+
+    @GetMapping("/company/selectNoticeForms")
+    @RequiresAuthentication
+    public NoticeForm selectNoticeForms(@RequestParam("publishUsername")String publishUsername,
+                                        @RequestParam("replyUsername")String replyUsername) {
+        return companyService.selectNoticeForms(publishUsername,replyUsername);
+    }
 
     @RequestMapping("/upload")
     @RequiresAuthentication

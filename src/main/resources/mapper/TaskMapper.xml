@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.TaskInfo">
+    <id column="task_id" jdbcType="BIGINT" property="taskId" />
+    <result column="task_number" jdbcType="VARCHAR" property="taskNumber" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="item_number" jdbcType="VARCHAR" property="itemNumber" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="task_time" jdbcType="VARCHAR" property="taskTime" />
+    <result column="plan_begin_time" jdbcType="TIMESTAMP" property="planBeginTime" />
+    <result column="plan_end_time" jdbcType="TIMESTAMP" property="planEndTime" />
+    <result column="plan_check_time" jdbcType="TIMESTAMP" property="planCheckTime" />
+    <result column="reality_begin_time" jdbcType="TIMESTAMP" property="realityBeginTime" />
+    <result column="reality_end_time" jdbcType="TIMESTAMP" property="realityEndTime" />
+    <result column="task_rate" jdbcType="INTEGER" property="taskRate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="task_priority" jdbcType="VARCHAR" property="taskPriority" />
+    <result column="father_number" jdbcType="VARCHAR" property="fatherNumber" />
+    <result column="has_children" jdbcType="TINYINT" property="hasChildren" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    task_id, task_number, task_name,item_number, item_name, task_time, plan_begin_time, plan_end_time, plan_check_time,
+    reality_begin_time, reality_end_time, task_rate, status, task_priority, father_number,
+    has_children, remarks
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from task_info
+    where task_id = #{taskId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from task_info
+    where has_children = #{hasChildren,jdbcType=TINYINT}
+  </select>
+  <select id="selectChildren" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from task_info
+    where father_number = #{taskNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTaskNumber" resultType="com.example.model.TaskInfo">
+    select
+    <include refid="Base_Column_List" />
+    from task_info
+    where task_number = #{taskNumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from task_info
+    where task_id = #{taskId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.TaskInfo">
+    <selectKey keyProperty="taskId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into task_info (task_number, task_name, item_number, item_name, task_time,
+      plan_begin_time, plan_end_time, plan_check_time,
+      reality_begin_time, reality_end_time, task_rate,
+      status, task_priority, father_number,
+      has_children, remarks)
+    values (#{taskNumber,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{itemNumber,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, #{taskTime,jdbcType=VARCHAR},
+      #{planBeginTime,jdbcType=TIMESTAMP}, #{planEndTime,jdbcType=TIMESTAMP}, #{planCheckTime,jdbcType=TIMESTAMP},
+      #{realityBeginTime,jdbcType=TIMESTAMP}, #{realityEndTime,jdbcType=TIMESTAMP}, #{taskRate,jdbcType=INTEGER},
+      #{status,jdbcType=TINYINT}, #{taskPriority,jdbcType=VARCHAR}, #{fatherNumber,jdbcType=VARCHAR},
+      #{hasChildren,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.TaskInfo">
+    <selectKey keyProperty="taskId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into task_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskNumber != null">
+        task_number,
+      </if>
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="itemNumber != null">
+        item_number,
+      </if>
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="taskTime != null">
+        task_time,
+      </if>
+      <if test="planBeginTime != null">
+        plan_begin_time,
+      </if>
+      <if test="planEndTime != null">
+        plan_end_time,
+      </if>
+      <if test="planCheckTime != null">
+        plan_check_time,
+      </if>
+      <if test="realityBeginTime != null">
+        reality_begin_time,
+      </if>
+      <if test="realityEndTime != null">
+        reality_end_time,
+      </if>
+      <if test="taskRate != null">
+        task_rate,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="taskPriority != null">
+        task_priority,
+      </if>
+      <if test="fatherNumber != null">
+        father_number,
+      </if>
+      <if test="hasChildren != null">
+        has_children,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskNumber != null">
+        #{taskNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNumber != null">
+        #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTime != null">
+        #{taskTime,jdbcType=VARCHAR},
+      </if>
+      <if test="planBeginTime != null">
+        #{planBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planEndTime != null">
+        #{planEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planCheckTime != null">
+        #{planCheckTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realityBeginTime != null">
+        #{realityBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realityEndTime != null">
+        #{realityEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskRate != null">
+        #{taskRate,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="taskPriority != null">
+        #{taskPriority,jdbcType=VARCHAR},
+      </if>
+      <if test="fatherNumber != null">
+        #{fatherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="hasChildren != null">
+        #{hasChildren,jdbcType=TINYINT},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.TaskInfo">
+    update task_info
+    <set>
+      <if test="taskNumber != null">
+        task_number = #{taskNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNumber != null">
+        item_number = #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTime != null">
+        task_time = #{taskTime,jdbcType=VARCHAR},
+      </if>
+      <if test="planBeginTime != null">
+        plan_begin_time = #{planBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planEndTime != null">
+        plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planCheckTime != null">
+        plan_check_time = #{planCheckTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realityBeginTime != null">
+        reality_begin_time = #{realityBeginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="realityEndTime != null">
+        reality_end_time = #{realityEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskRate != null">
+        task_rate = #{taskRate,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="taskPriority != null">
+        task_priority = #{taskPriority,jdbcType=VARCHAR},
+      </if>
+      <if test="fatherNumber != null">
+        father_number = #{fatherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="hasChildren != null">
+        has_children = #{hasChildren,jdbcType=TINYINT},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.TaskInfo">
+    update task_info
+    set task_number = #{taskNumber,jdbcType=VARCHAR},
+      task_name = #{taskName,jdbcType=VARCHAR},
+      item_number = #{itemNumber,jdbcType=VARCHAR},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      task_time = #{taskTime,jdbcType=VARCHAR},
+      plan_begin_time = #{planBeginTime,jdbcType=TIMESTAMP},
+      plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
+      plan_check_time = #{planCheckTime,jdbcType=TIMESTAMP},
+      reality_begin_time = #{realityBeginTime,jdbcType=TIMESTAMP},
+      reality_end_time = #{realityEndTime,jdbcType=TIMESTAMP},
+      task_rate = #{taskRate,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      task_priority = #{taskPriority,jdbcType=VARCHAR},
+      father_number = #{fatherNumber,jdbcType=VARCHAR},
+      has_children = #{hasChildren,jdbcType=TINYINT},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where task_id = #{taskId,jdbcType=BIGINT}
+  </update>
+</mapper>

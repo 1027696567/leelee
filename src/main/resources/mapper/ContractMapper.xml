@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ContractMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.ContractInfo">
+    <id column="contract_id" jdbcType="BIGINT" property="contractId" />
+    <result column="contract_number" jdbcType="VARCHAR" property="contractNumber" />
+    <result column="contract_name" jdbcType="VARCHAR" property="contractName" />
+    <result column="item_number" jdbcType="VARCHAR" property="itemNumber" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="first_party" jdbcType="VARCHAR" property="firstParty" />
+    <result column="second_party" jdbcType="VARCHAR" property="secondParty" />
+    <result column="third_party" jdbcType="VARCHAR" property="thirdParty" />
+    <result column="father_number" jdbcType="VARCHAR" property="fatherNumber" />
+    <result column="contract_types" jdbcType="VARCHAR" property="contractTypes" />
+    <result column="contract_time" jdbcType="TIMESTAMP" property="contractTime" />
+    <result column="duty_name" jdbcType="VARCHAR" property="dutyName" />
+    <result column="duty_username" jdbcType="VARCHAR" property="dutyUsername" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="has_children" jdbcType="TINYINT" property="hasChildren" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    contract_id, contract_number, contract_name, item_number, item_name, first_party,
+    second_party, third_party, father_number, contract_types, contract_time, duty_name,
+    duty_username, create_username, create_time, has_children
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from contract_info
+    where contract_id = #{contractId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAllContractInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from contract_info
+  </select>
+  <select id="selectByContractNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from contract_info
+    where contract_number = #{contractNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectMainContract" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from contract_info
+    where contract_types = 1 or contract_types = 2
+  </select>
+  <select id="selectByFatherNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from contract_info
+    where father_number = #{fatherNumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from contract_info
+    where contract_id = #{contractId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.ContractInfo">
+    <selectKey keyProperty="contractId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into contract_info (contract_number, contract_name, item_number,
+      item_name, first_party, second_party,
+      third_party, father_number, contract_types,
+      contract_time, duty_name, duty_username,
+      create_username, create_time, has_children)
+    values (#{contractNumber,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{itemNumber,jdbcType=VARCHAR},
+      #{itemName,jdbcType=VARCHAR}, #{firstParty,jdbcType=VARCHAR}, #{secondParty,jdbcType=VARCHAR},
+      #{thirdParty,jdbcType=VARCHAR}, #{fatherNumber,jdbcType=VARCHAR}, #{contractTypes,jdbcType=VARCHAR},
+      #{contractTime,jdbcType=TIMESTAMP}, #{dutyName,jdbcType=VARCHAR}, #{dutyUsername,jdbcType=VARCHAR},
+      #{createUsername,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{hasChildren,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.ContractInfo">
+    <selectKey keyProperty="contractId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into contract_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="contractNumber != null">
+        contract_number,
+      </if>
+      <if test="contractName != null">
+        contract_name,
+      </if>
+      <if test="itemNumber != null">
+        item_number,
+      </if>
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="firstParty != null">
+        first_party,
+      </if>
+      <if test="secondParty != null">
+        second_party,
+      </if>
+      <if test="thirdParty != null">
+        third_party,
+      </if>
+      <if test="fatherNumber != null">
+        father_number,
+      </if>
+      <if test="contractTypes != null">
+        contract_types,
+      </if>
+      <if test="contractTime != null">
+        contract_time,
+      </if>
+      <if test="dutyName != null">
+        duty_name,
+      </if>
+      <if test="dutyUsername != null">
+        duty_username,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="hasChildren != null">
+        has_children,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="contractNumber != null">
+        #{contractNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null">
+        #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNumber != null">
+        #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstParty != null">
+        #{firstParty,jdbcType=VARCHAR},
+      </if>
+      <if test="secondParty != null">
+        #{secondParty,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdParty != null">
+        #{thirdParty,jdbcType=VARCHAR},
+      </if>
+      <if test="fatherNumber != null">
+        #{fatherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contractTypes != null">
+        #{contractTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="contractTime != null">
+        #{contractTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dutyName != null">
+        #{dutyName,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyUsername != null">
+        #{dutyUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hasChildren != null">
+        #{hasChildren,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.ContractInfo">
+    update contract_info
+    <set>
+      <if test="contractNumber != null">
+        contract_number = #{contractNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null">
+        contract_name = #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNumber != null">
+        item_number = #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstParty != null">
+        first_party = #{firstParty,jdbcType=VARCHAR},
+      </if>
+      <if test="secondParty != null">
+        second_party = #{secondParty,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdParty != null">
+        third_party = #{thirdParty,jdbcType=VARCHAR},
+      </if>
+      <if test="fatherNumber != null">
+        father_number = #{fatherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contractTypes != null">
+        contract_types = #{contractTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="contractTime != null">
+        contract_time = #{contractTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dutyName != null">
+        duty_name = #{dutyName,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyUsername != null">
+        duty_username = #{dutyUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hasChildren != null">
+        has_children = #{hasChildren,jdbcType=TINYINT},
+      </if>
+    </set>
+    where contract_id = #{contractId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.ContractInfo">
+    update contract_info
+    set contract_number = #{contractNumber,jdbcType=VARCHAR},
+      contract_name = #{contractName,jdbcType=VARCHAR},
+      item_number = #{itemNumber,jdbcType=VARCHAR},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      first_party = #{firstParty,jdbcType=VARCHAR},
+      second_party = #{secondParty,jdbcType=VARCHAR},
+      third_party = #{thirdParty,jdbcType=VARCHAR},
+      father_number = #{fatherNumber,jdbcType=VARCHAR},
+      contract_types = #{contractTypes,jdbcType=VARCHAR},
+      contract_time = #{contractTime,jdbcType=TIMESTAMP},
+      duty_name = #{dutyName,jdbcType=VARCHAR},
+      duty_username = #{dutyUsername,jdbcType=VARCHAR},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      has_children = #{hasChildren,jdbcType=TINYINT},
+    where contract_id = #{contractId,jdbcType=BIGINT}
+  </update>
+</mapper>

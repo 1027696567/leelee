@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.NoticeMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.NoticeInfo">
+    <id column="notice_id" jdbcType="BIGINT" property="noticeId" />
+    <result column="publish_username" jdbcType="VARCHAR" property="publishUsername" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="publish_content" jdbcType="VARCHAR" property="publishContent" />
+    <result column="reply_username" jdbcType="VARCHAR" property="replyUsername" />
+    <result column="reply_time" jdbcType="TIMESTAMP" property="replyTime" />
+    <result column="reply_content" jdbcType="VARCHAR" property="replyContent" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    notice_id, publish_username, publish_time, publish_content, reply_username, reply_time,
+    reply_content, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from notice_info
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </select>
+    <select id="selectAllNoticeInfo" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from notice_info
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from notice_info
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.NoticeInfo">
+    <selectKey keyProperty="noticeId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into notice_info (publish_username, publish_time, publish_content,
+      reply_username, reply_time, reply_content,
+      status)
+    values (#{publishUsername,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, #{publishContent,jdbcType=VARCHAR},
+      #{replyUsername,jdbcType=VARCHAR}, #{replyTime,jdbcType=TIMESTAMP}, #{replyContent,jdbcType=VARCHAR},
+      #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.NoticeInfo">
+    <selectKey keyProperty="noticeId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into notice_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="publishUsername != null">
+        publish_username,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+      <if test="publishContent != null">
+        publish_content,
+      </if>
+      <if test="replyUsername != null">
+        reply_username,
+      </if>
+      <if test="replyTime != null">
+        reply_time,
+      </if>
+      <if test="replyContent != null">
+        reply_content,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="publishUsername != null">
+        #{publishUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishContent != null">
+        #{publishContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyUsername != null">
+        #{replyUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null">
+        #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyContent != null">
+        #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.NoticeInfo">
+    update notice_info
+    <set>
+      <if test="publishUsername != null">
+        publish_username = #{publishUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publishContent != null">
+        publish_content = #{publishContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyUsername != null">
+        reply_username = #{replyUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null">
+        reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyContent != null">
+        reply_content = #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.NoticeInfo">
+    update notice_info
+    set publish_username = #{publishUsername,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      publish_content = #{publishContent,jdbcType=VARCHAR},
+      reply_username = #{replyUsername,jdbcType=VARCHAR},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      reply_content = #{replyContent,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT}
+    where notice_id = #{noticeId,jdbcType=BIGINT}
+  </update>
+</mapper>

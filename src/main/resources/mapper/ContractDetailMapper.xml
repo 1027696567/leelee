@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ContractDetailMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.ContractDetail">
+    <id column="detail_id" jdbcType="BIGINT" property="detailId" />
+    <result column="detail_name" jdbcType="VARCHAR" property="detailName" />
+    <result column="detail_content" jdbcType="VARCHAR" property="detailContent" />
+    <result column="detail_describe" jdbcType="VARCHAR" property="detailDescribe" />
+    <result column="contract_number" jdbcType="VARCHAR" property="contractNumber" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    detail_id, detail_name, detail_content, detail_describe, contract_number
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from contract_detail
+    where detail_id = #{detailId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByContractNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from contract_detail
+    where contract_Number = #{contractNumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from contract_detail
+    where detail_id = #{detailId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByContractNumber">
+    delete from contract_detail
+    where contract_number = #{contractNumber,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.ContractDetail">
+    <selectKey keyProperty="detailId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into contract_detail (detail_name, detail_content, detail_describe,
+      contract_number)
+    values (#{detailName,jdbcType=VARCHAR}, #{detailContent,jdbcType=VARCHAR}, #{detailDescribe,jdbcType=VARCHAR},
+      #{contractNumber,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.ContractDetail">
+    <selectKey keyProperty="detailId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into contract_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="detailName != null">
+        detail_name,
+      </if>
+      <if test="detailContent != null">
+        detail_content,
+      </if>
+      <if test="detailDescribe != null">
+        detail_describe,
+      </if>
+      <if test="contractNumber != null">
+        contract_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="detailName != null">
+        #{detailName,jdbcType=VARCHAR},
+      </if>
+      <if test="detailContent != null">
+        #{detailContent,jdbcType=VARCHAR},
+      </if>
+      <if test="detailDescribe != null">
+        #{detailDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNumber != null">
+        #{contractNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.ContractDetail">
+    update contract_detail
+    <set>
+      <if test="detailName != null">
+        detail_name = #{detailName,jdbcType=VARCHAR},
+      </if>
+      <if test="detailContent != null">
+        detail_content = #{detailContent,jdbcType=VARCHAR},
+      </if>
+      <if test="detailDescribe != null">
+        detail_describe = #{detailDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNumber != null">
+        contract_number = #{contractNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where detail_id = #{detailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.ContractDetail">
+    update contract_detail
+    set detail_name = #{detailName,jdbcType=VARCHAR},
+      detail_content = #{detailContent,jdbcType=VARCHAR},
+      detail_describe = #{detailDescribe,jdbcType=VARCHAR},
+      contract_number = #{contractNumber,jdbcType=VARCHAR}
+    where detail_id = #{detailId,jdbcType=BIGINT}
+  </update>
+</mapper>

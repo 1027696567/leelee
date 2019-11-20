@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TenderMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.TenderInfo">
+    <id column="tender_id" jdbcType="BIGINT" property="tenderId" />
+    <result column="tender_user_name" jdbcType="VARCHAR" property="tenderUserName" />
+    <result column="tender_time" jdbcType="TIMESTAMP" property="tenderTime" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="upload_status" jdbcType="VARCHAR" property="uploadStatus" />
+    <result column="tender_book_url" jdbcType="VARCHAR" property="tenderBookUrl" />
+    <result column="item_id" jdbcType="BIGINT" property="itemId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tender_id, tender_user_name, tender_time, remarks, upload_status, tender_book_url, item_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tender_info
+    where tender_id = #{tenderId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByUserAndItem" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tender_info
+    where tender_user_name = #{username,jdbcType=VARCHAR} and item_id = #{itemId,jdbcType=BIGINT}
+  </select>
+
+  <resultMap id="TenderTable" type="com.example.model.TenderTable">
+    <id column="tender_id" jdbcType="BIGINT" property="tenderId" />
+    <result column="tender_user_name" jdbcType="VARCHAR" property="tenderUserName" />
+    <result column="tender_time" jdbcType="TIMESTAMP" property="tenderTime" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="company_number" jdbcType="VARCHAR" property="companyNumber" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+  </resultMap>
+  <select id="selectTenderTable" resultMap="TenderTable">
+    SELECT tender_id, tender_user_name, tender_time, company_number, company_name, remarks
+    FROM (tender_info a LEFT JOIN company_info b ON a.tender_user_name = b.create_user_name)
+    WHERE a.item_id = #{itemId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tender_info
+    where tender_id = #{tenderId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.TenderInfo">
+    <selectKey keyProperty="tenderId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tender_info (tender_user_name, tender_time, remarks,
+      upload_status, tender_book_url, item_id)
+    values (#{tenderUserName,jdbcType=VARCHAR}, #{tenderTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR},
+      #{uploadStatus,jdbcType=VARCHAR}, #{tenderBookUrl,jdbcType=VARCHAR}, #{itemId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.TenderInfo">
+    <selectKey keyProperty="tenderId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tender_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tenderUserName != null">
+        tender_user_name,
+      </if>
+      <if test="tenderTime != null">
+        tender_time,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="uploadStatus != null">
+        upload_status,
+      </if>
+      <if test="tenderBookUrl != null">
+        tender_book_url,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tenderUserName != null">
+        #{tenderUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="tenderTime != null">
+        #{tenderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadStatus != null">
+        #{uploadStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="tenderBookUrl != null">
+        #{tenderBookUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.TenderInfo">
+    update tender_info
+    <set>
+      <if test="tenderUserName != null">
+        tender_user_name = #{tenderUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="tenderTime != null">
+        tender_time = #{tenderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadStatus != null">
+        upload_status = #{uploadStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="tenderBookUrl != null">
+        tender_book_url = #{tenderBookUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tender_id = #{tenderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.TenderInfo">
+    update tender_info
+    set tender_user_name = #{tenderUserName,jdbcType=VARCHAR},
+      tender_time = #{tenderTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      upload_status = #{uploadStatus,jdbcType=VARCHAR},
+      tender_book_url = #{tenderBookUrl,jdbcType=VARCHAR}
+      item_id = #{itemId,jdbcType=BIGINT}
+    where tender_id = #{tenderId,jdbcType=BIGINT}
+  </update>
+</mapper>

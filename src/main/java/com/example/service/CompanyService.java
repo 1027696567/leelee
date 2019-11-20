@@ -1,8 +1,8 @@
 package com.example.service;
 
-import com.example.model.CompanyInfo;
-import com.example.model.VerityInfo;
+import com.example.model.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface CompanyService {
@@ -26,4 +26,32 @@ public interface CompanyService {
     Integer updateCompanyInfo(Long companyId);
 
     Integer deleteCompanyInfo(Long companyId);
+
+    Integer addItemInfo(ItemInfo itemInfo);
+
+    List<ItemInfo> selectAllItemInfo();
+
+    Integer updateItemInfo(ItemInfo itemInfo);
+
+    CompanyInfo selectUserCompanyInfo(String username);
+
+    Integer addTenderInfo(TenderInfo tenderInfo);
+
+    String selectTenderByUserAndItem(HttpServletResponse httpServletResponse, String username, Long itemId);
+
+    Integer deleteItemInfo(Long itemId);
+
+    List<TenderTable> selectTenderTable(Long itemId);
+
+    List<NoticeInfo> selectAllNoticeInfo();
+
+    Integer insertNoticeInfo(NoticeInfo noticeInfo);
+
+    Integer updateNoticeInfo(NoticeInfo noticeInfo);
+
+    NoticeForm selectNoticeForm(String username);
+
+    NoticeForm selectNoticeForms(String publishUsername, String replyUsername);
+
+    List<ItemInfo> selectFinish();
 }

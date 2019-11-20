@@ -1,5 +1,6 @@
 package com.example.mapper;
 
+import com.example.model.NoticeForm;
 import com.example.model.SysRole;
 import com.example.model.SysUserRole;
 import org.apache.ibatis.annotations.Mapper;
@@ -37,4 +38,6 @@ public interface SysRoleMapper {
  * 查询sys_user_role所有信息
  * */
     List<SysUserRole> selectAllInfo();
+
+
 }
