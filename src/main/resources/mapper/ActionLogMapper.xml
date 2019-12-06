@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ActionLogMapper">
+
+  <resultMap id="logMap" type="com.example.model.ActionLogInfo">
+    <result property="ip" column="ip"/>
+    <result property="action" column="action"/>
+    <result property="time" column="time"/>
+    <result property="user" column="user"/>
+    <result property="visitTime" column="visit_time"/>
+  </resultMap>
+  <insert id="insertActionLog" parameterType="com.example.model.ActionLogInfo">
+    insert into action_log_info(ip,action,time,user,visit_time)
+    value (#{ip},#{action},#{time},#{user},#{visitTime})
+  </insert>
+  <select id="queryActionLogList" resultMap="logMap">
+    select id,ip,action,time,user,visit_time from action_log_info
+  </select>
+</mapper>
