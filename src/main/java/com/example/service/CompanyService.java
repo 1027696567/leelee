@@ -54,4 +54,6 @@ public interface CompanyService {
     NoticeForm selectNoticeForms(String publishUsername, String replyUsername);
 
     List<ItemInfo> selectFinish();
+
+    ItemInfo selectByItemNumber(String itemNumber);
 }

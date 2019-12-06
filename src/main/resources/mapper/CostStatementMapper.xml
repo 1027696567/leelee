@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CostStatementMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.CostStatementInfo">
+    <id column="cost_statement_id" jdbcType="BIGINT" property="costStatementId" />
+    <result column="cost_account_number" jdbcType="VARCHAR" property="costAccountNumber" />
+    <result column="cost_incurred" jdbcType="INTEGER" property="costIncurred" />
+    <result column="cost_wait_incurred" jdbcType="INTEGER" property="costWaitIncurred" />
+    <result column="cost_dynamics" jdbcType="INTEGER" property="costDynamics" />
+    <result column="differ_price" jdbcType="INTEGER" property="differPrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cost_statement_id, cost_account_number, cost_incurred, cost_wait_incurred, cost_dynamics, 
+    differ_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cost_statement_info
+    where cost_statement_id = #{costStatementId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cost_statement_info
+    where cost_statement_id = #{costStatementId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.CostStatementInfo">
+    <selectKey keyProperty="costStatementId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cost_statement_info (cost_account_number, cost_incurred, 
+      cost_wait_incurred, cost_dynamics, differ_price
+      )
+    values (#{costAccountNumber,jdbcType=VARCHAR}, #{costIncurred,jdbcType=INTEGER}, 
+      #{costWaitIncurred,jdbcType=INTEGER}, #{costDynamics,jdbcType=INTEGER}, #{differPrice,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.CostStatementInfo">
+    <selectKey keyProperty="costStatementId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cost_statement_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costAccountNumber != null">
+        cost_account_number,
+      </if>
+      <if test="costIncurred != null">
+        cost_incurred,
+      </if>
+      <if test="costWaitIncurred != null">
+        cost_wait_incurred,
+      </if>
+      <if test="costDynamics != null">
+        cost_dynamics,
+      </if>
+      <if test="differPrice != null">
+        differ_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costAccountNumber != null">
+        #{costAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="costIncurred != null">
+        #{costIncurred,jdbcType=INTEGER},
+      </if>
+      <if test="costWaitIncurred != null">
+        #{costWaitIncurred,jdbcType=INTEGER},
+      </if>
+      <if test="costDynamics != null">
+        #{costDynamics,jdbcType=INTEGER},
+      </if>
+      <if test="differPrice != null">
+        #{differPrice,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.CostStatementInfo">
+    update cost_statement_info
+    <set>
+      <if test="costAccountNumber != null">
+        cost_account_number = #{costAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="costIncurred != null">
+        cost_incurred = #{costIncurred,jdbcType=INTEGER},
+      </if>
+      <if test="costWaitIncurred != null">
+        cost_wait_incurred = #{costWaitIncurred,jdbcType=INTEGER},
+      </if>
+      <if test="costDynamics != null">
+        cost_dynamics = #{costDynamics,jdbcType=INTEGER},
+      </if>
+      <if test="differPrice != null">
+        differ_price = #{differPrice,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cost_statement_id = #{costStatementId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.CostStatementInfo">
+    update cost_statement_info
+    set cost_account_number = #{costAccountNumber,jdbcType=VARCHAR},
+      cost_incurred = #{costIncurred,jdbcType=INTEGER},
+      cost_wait_incurred = #{costWaitIncurred,jdbcType=INTEGER},
+      cost_dynamics = #{costDynamics,jdbcType=INTEGER},
+      differ_price = #{differPrice,jdbcType=INTEGER}
+    where cost_statement_id = #{costStatementId,jdbcType=BIGINT}
+  </update>
+</mapper>

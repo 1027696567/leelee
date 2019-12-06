@@ -46,7 +46,8 @@
     LEFT JOIN bidding_way_info c ON a.bidding_way = c.bidding_way_id)
   </select>
   <select id="selectFinish" resultMap="BaseResultMap">
-    select *
+    select
+    <include refid="Base_Column_List" />
     from item_info
     where status = 2
   </select>

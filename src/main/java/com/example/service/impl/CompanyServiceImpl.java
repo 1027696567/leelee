@@ -252,4 +252,9 @@ public class CompanyServiceImpl implements CompanyService {
     public List<ItemInfo> selectFinish() {
         return itemMapper.selectFinish();
     }
+
+    @Override
+    public ItemInfo selectByItemNumber(String itemNumber) {
+        return itemMapper.selectByItemNumber(itemNumber);
+    }
 }

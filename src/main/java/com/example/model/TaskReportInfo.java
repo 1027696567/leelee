@@ -43,51 +43,5 @@ public class TaskReportInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Long getTaskReportId() {
-        return taskReportId;
-    }
-
-    public void setTaskReportId(Long taskReportId) {
-        this.taskReportId = taskReportId;
-    }
-
-    public String getTaskReportUsername() {
-        return taskReportUsername;
-    }
-
-    public void setTaskReportUsername(String taskReportUsername) {
-        this.taskReportUsername = taskReportUsername;
-    }
-
-    public Date getTaskReportTime() {
-        return taskReportTime;
-    }
-
-    public void setTaskReportTime(Date taskReportTime) {
-        this.taskReportTime = taskReportTime;
-    }
-
-    public String getDutyUsername() {
-        return dutyUsername;
-    }
-
-    public void setDutyUsername(String dutyUsername) {
-        this.dutyUsername = dutyUsername;
-    }
-
-    public Integer getTaskAmount() {
-        return taskAmount;
-    }
-
-    public void setTaskAmount(Integer taskAmount) {
-        this.taskAmount = taskAmount;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
+    private String taskNumber;
 }

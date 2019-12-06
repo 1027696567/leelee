@@ -174,6 +174,12 @@ public class CompanyController {
         return companyService.selectNoticeForms(publishUsername,replyUsername);
     }
 
+    @GetMapping("/company/selectItemInfo")
+    @RequiresAuthentication
+    public ItemInfo selectItemInfo(@RequestParam("itemNumber")String itemNumber) {
+        return companyService.selectByItemNumber(itemNumber);
+    }
+
     @RequestMapping("/upload")
     @RequiresAuthentication
     public String addImg(@RequestBody MultipartFile file, HttpServletRequest request, HttpServletResponse response)throws Exception{

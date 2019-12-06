@@ -3,6 +3,7 @@ package com.example.service.impl;
 import com.example.mapper.TaskMapper;
 import com.example.mapper.TaskReportMapper;
 import com.example.model.TaskInfo;
+import com.example.model.TaskReportInfo;
 import com.example.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,5 +51,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Integer updateTask(TaskInfo taskInfo) {
         return taskMapper.updateByPrimaryKeySelective(taskInfo);
+    }
+
+    @Override
+    public Integer insertTaskReportInfo(TaskReportInfo taskReportInfo) {
+        return taskReportMapper.insertSelective(taskReportInfo);
+    }
+
+    @Override
+    public Integer deleteTaskInfo(Long taskId) {
+        return taskMapper.deleteByPrimaryKey(taskId);
     }
 }

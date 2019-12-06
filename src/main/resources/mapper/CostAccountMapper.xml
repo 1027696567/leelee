@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CostAccountMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.CostAccountInfo">
+    <id column="cost_account_id" jdbcType="BIGINT" property="costAccountId" />
+    <result column="cost_account_number" jdbcType="VARCHAR" property="costAccountNumber" />
+    <result column="cost_account_name" jdbcType="VARCHAR" property="costAccountName" />
+    <result column="item_number" jdbcType="VARCHAR" property="itemNumber" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="classifications" jdbcType="VARCHAR" property="classifications" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="has_children" jdbcType="TINYINT" property="hasChildren" />
+    <result column="parent_number" jdbcType="VARCHAR" property="parentNumber" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cost_account_id, cost_account_number, cost_account_name, item_number, item_name,
+    status, classifications, remarks, create_username, has_children, parent_number, level
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where cost_account_id = #{costAccountId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+  </select>
+  <select id="selectByItemNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where item_number = #{itemNumber,jdbcType=VARCHAR} and parent_number is null
+  </select>
+  <select id="selectChildren" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where parent_number = #{parentNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCostAccountNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where cost_account_number = #{costAccountNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectChildrenByStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where parent_number = #{parentNumber,jdbcType=VARCHAR} and status = #{status,jdbcType=TINYINT}
+  </select>
+  <select id="selectByParentNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where cost_account_number = #{costAccountNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByParentNumbers" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where parent_number = #{parentNumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectSelfByCostNumber" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cost_account_info
+    where cost_account_number = #{costAccountNumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cost_account_info
+    where cost_account_id = #{costAccountId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.CostAccountInfo">
+    <selectKey keyProperty="costAccountId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cost_account_info (cost_account_number, cost_account_name,
+      item_number, item_name, status,
+      classifications, remarks, create_username,
+      has_children, parent_number, level)
+    values (#{costAccountNumber,jdbcType=VARCHAR}, #{costAccountName,jdbcType=VARCHAR},
+      #{itemNumber,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+      #{classifications,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{createUsername,jdbcType=VARCHAR},
+      #{hasChildren,jdbcType=TINYINT}, #{parentNumber,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.CostAccountInfo">
+    <selectKey keyProperty="costAccountId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cost_account_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costAccountNumber != null">
+        cost_account_number,
+      </if>
+      <if test="costAccountName != null">
+        cost_account_name,
+      </if>
+      <if test="itemNumber != null">
+        item_number,
+      </if>
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="classifications != null">
+        classifications,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="hasChildren != null">
+        has_children,
+      </if>
+      <if test="parentNumber != null">
+        parent_number,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costAccountNumber != null">
+        #{costAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="costAccountName != null">
+        #{costAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNumber != null">
+        #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="classifications != null">
+        #{classifications,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="hasChildren != null">
+        #{hasChildren,jdbcType=TINYINT},
+      </if>
+      <if test="parentNumber != null">
+        #{parentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.CostAccountInfo">
+    update cost_account_info
+    <set>
+      <if test="costAccountNumber != null">
+        cost_account_number = #{costAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="costAccountName != null">
+        cost_account_name = #{costAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNumber != null">
+        item_number = #{itemNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null">
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="classifications != null">
+        classifications = #{classifications,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="hasChildren != null">
+        has_children = #{hasChildren,jdbcType=TINYINT},
+      </if>
+      <if test="parentNumber != null">
+        parent_number = #{parentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cost_account_id = #{costAccountId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.CostAccountInfo">
+    update cost_account_info
+    set cost_account_number = #{costAccountNumber,jdbcType=VARCHAR},
+      cost_account_name = #{costAccountName,jdbcType=VARCHAR},
+      item_number = #{itemNumber,jdbcType=VARCHAR},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      classifications = #{classifications,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      has_children = #{hasChildren,jdbcType=TINYINT},
+      parent_number = #{parentNumber,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER}
+    where cost_account_id = #{costAccountId,jdbcType=BIGINT}
+  </update>
+</mapper>

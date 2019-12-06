@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.TaskInfo;
+import com.example.model.TaskReportInfo;
 import com.example.service.TaskService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -45,5 +46,17 @@ public class TaskController {
     @RequiresAuthentication
     public Integer updateTask(@RequestBody TaskInfo taskInfo) {
         return taskService.updateTask(taskInfo);
+    }
+
+    @PostMapping("/task/addTaskReport")
+    @RequiresPermissions("sys:user:shiro")
+    public Integer insertTaskReport(@RequestBody TaskReportInfo taskReportInfo) {
+        return taskService.insertTaskReportInfo(taskReportInfo);
+    }
+
+    @DeleteMapping("/task/deleteTaskInfo")
+    @RequiresPermissions("sys:user:shiro")
+    public Integer deleteTaskInfo(@RequestParam("taskId")Long taskId) {
+        return taskService.deleteTaskInfo(taskId);
     }
 }
