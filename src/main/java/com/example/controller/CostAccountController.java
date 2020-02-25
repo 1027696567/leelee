@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.CostAccountInfo;
+import com.example.model.CostStatementMerge;
 import com.example.model.CostTargetMerge;
 import com.example.service.CostAccountService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -87,5 +88,29 @@ public class CostAccountController {
     @RequiresAuthentication
     public String updateCostTarget(@RequestBody CostTargetMerge costTargetMerge) {
         return costAccountService.updateCostTarget(costTargetMerge);
+    }
+
+    @GetMapping("/cost/selectCostStatement")
+    @RequiresAuthentication
+    public List<CostStatementMerge> selectCostStatement(@RequestParam("itemNumber")String itemNumber) {
+        return costAccountService.selectCostStatementInfo(itemNumber);
+    }
+
+    @GetMapping("/cost/selectCostStatementChildren")
+    @RequiresAuthentication
+    public List<CostStatementMerge> selectCostStatementChildren(@RequestParam("costAccountNumber")String costAccountNumber) {
+        return costAccountService.selectCostStatementChildren(costAccountNumber);
+    }
+
+    @PostMapping("/cost/insertCostStatement")
+    @RequiresAuthentication
+    public String insertCostStatement(@RequestBody CostStatementMerge costStatementMerge) {
+        return costAccountService.insertCostStatement(costStatementMerge);
+    }
+
+    @PutMapping("/cost/updateCostStatement")
+    @RequiresAuthentication
+    public String updateCostStatement(@RequestBody CostStatementMerge costStatementMerge) {
+        return costAccountService.updateCostStatementInfo(costStatementMerge);
     }
 }

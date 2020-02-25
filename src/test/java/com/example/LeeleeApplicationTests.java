@@ -15,16 +15,6 @@ public class LeeleeApplicationTests {
     @Test
     public void contextLoads() {
     }
-    @Test
-    public void getRoles() {
-        System.out.println(shiroService.getRoles("admin"));
-        System.out.println(shiroService.getPermissions());
-        System.out.println(shiroService.getMenu());
-    }
-    @Test
-    public void getUserRole() {
-        System.out.println(shiroService.getUserList());
-    }
 
 
 }

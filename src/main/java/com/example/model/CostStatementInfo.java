@@ -42,4 +42,10 @@ public class CostStatementInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Integer workAmount;
+
+    private Integer restWorkAmount;
+
+    private Integer unitPrice;
+
 }

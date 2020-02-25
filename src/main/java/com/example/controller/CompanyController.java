@@ -181,7 +181,6 @@ public class CompanyController {
     }
 
     @RequestMapping("/upload")
-    @RequiresAuthentication
     public String addImg(@RequestBody MultipartFile file, HttpServletRequest request, HttpServletResponse response)throws Exception{
         System.out.println(file.getOriginalFilename());
         if(file != null){

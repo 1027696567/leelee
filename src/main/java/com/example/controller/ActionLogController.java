@@ -4,6 +4,7 @@ import com.example.model.ActionLogInfo;
 import com.example.service.ActionLogService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,12 +18,13 @@ import java.util.List;
  */
 
 @RestController
-
+@CrossOrigin
 public class ActionLogController {
     @Autowired
     ActionLogService actionLogService;
-    @RequiresAuthentication
+
     @GetMapping("/log/getLogList")
+    @RequiresAuthentication
     public List<ActionLogInfo> queryActionLogList(){
         return actionLogService.queryActionLogList();
     }

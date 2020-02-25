@@ -2,6 +2,7 @@ package com.example.Filter;
 
 import com.example.mapper.ActionLogMapper;
 import com.example.model.ActionLogInfo;
+import com.example.model.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -55,12 +56,13 @@ public class CustomAutoAspectJInterceptor {
 
 
         Subject subject = SecurityUtils.getSubject();
-
         Long time = endTime - startTime;
-        String user = subject.getPrincipal().toString().split("\\,")[1].split("\\=")[1];
-
-        ActionLogInfo actionLogInfo = new ActionLogInfo(request.getRemoteAddr(), request.getRequestURI().toString(), time.toString(), user);
-        actionLogMapper.insertActionLog(actionLogInfo);
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        if (sysUser != null) {
+            String user = sysUser.toString().split("\\,")[1].split("\\=")[1];
+             ActionLogInfo actionLogInfo = new ActionLogInfo(request.getRemoteAddr(), request.getRequestURI().toString(), time.toString(), user);
+             actionLogMapper.insertActionLog(actionLogInfo);
+        }
         // TODO: 2019-11-18
         return ret;
     }

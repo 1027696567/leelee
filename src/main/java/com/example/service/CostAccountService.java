@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.model.CostAccountInfo;
+import com.example.model.CostStatementMerge;
 import com.example.model.CostTargetMerge;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,4 +29,12 @@ public interface CostAccountService {
     String insertCostTarget(CostTargetMerge costTargetMerge);
 
     String updateCostTarget(CostTargetMerge costTargetMerge);
+
+    List<CostStatementMerge> selectCostStatementInfo(String itemNumber);
+
+    List<CostStatementMerge> selectCostStatementChildren(String costAccountNumber);
+
+    String insertCostStatement(CostStatementMerge costStatementMerge);
+
+    String updateCostStatementInfo(CostStatementMerge costStatementMerge);
 }

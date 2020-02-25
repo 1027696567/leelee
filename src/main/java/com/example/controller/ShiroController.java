@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.SysUser;
 import com.example.model.UserInfo;
 import com.example.service.ShiroService;
 import org.apache.shiro.SecurityUtils;
@@ -57,10 +58,18 @@ public class ShiroController {
     }
 
     @GetMapping("/userLogOut")
-    public String logout (){
+    public String logout(){
         SecurityUtils.getSubject().logout();
         return "success" ;
     }
 
+    @PostMapping("/register")
+    public Integer Register(@RequestBody SysUser sysUser) {
+        return shiroService.register(sysUser);
+    }
 
+    @PutMapping("/updateRole")
+    public Integer updateRole(@RequestBody UserInfo userInfo) {
+        return shiroService.updateRole(userInfo);
+    }
 }

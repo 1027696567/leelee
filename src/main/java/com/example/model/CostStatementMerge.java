@@ -69,25 +69,6 @@ public class CostStatementMerge implements Serializable {
      */
     private String itemName;
 
-    /**
-     * 是否启用
-     */
-    private boolean status;
-
-    /**
-     * 科目类别
-     */
-    private String classifications;
-
-    /**
-     * 备注
-     */
-    private String remarks;
-
-    /**
-     * 创建人
-     */
-    private String createUsername;
 
     /**
      * 是否有子节点
@@ -109,4 +90,16 @@ public class CostStatementMerge implements Serializable {
      * 总价
      */
     private Integer totalPrice;
+
+    private Integer workAmount;
+
+    private Integer restWorkAmount;
+
+    private Integer unitPrice;
+
+    private Integer totalWorkAmount;
+
+    private String measurementUnit;
+
+    private Integer oldUnitPrice;
 }

@@ -3,13 +3,20 @@ package com.example.service.impl;
 import com.example.mapper.SysMenuMapper;
 import com.example.mapper.SysRoleMapper;
 import com.example.mapper.SysUserMapper;
+import com.example.mapper.SysUserRoleMapper;
 import com.example.model.*;
 import com.example.service.ShiroService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -28,6 +35,8 @@ public class ShiroServiceImpl implements ShiroService {
     private SysMenuMapper sysMenuMapper;
     @Autowired
     private SysRoleMapper sysRoleMapper;
+    @Autowired
+    private SysUserRoleMapper sysUserRoleMapper;
     /**
      * 用户拥有的角色Id
      **/
@@ -195,16 +204,19 @@ public class ShiroServiceImpl implements ShiroService {
                 userInfo.setStatus("禁用");
             }
             List<String> roleName = new ArrayList<>();
+            List<Long>  roleId = new ArrayList<>();
             for (int s = 0; s < userRoles.size(); s++) {
                 if (userRoles.get(s).getUserId().equals(users.get(i).getUserId())) {
                     for (int x = 0; x < roles.size(); x++) {
                         if (roles.get(x).getRoleId() == userRoles.get(s).getRoleId().intValue()) {
                             roleName.add(roles.get(x).getRoleName());
+                            roleId.add(roles.get(x).getRoleId());
                         }
                     }
                 }
             }
             userInfo.setRoleName(String.join("，", roleName));
+            userInfo.setRoleId(roleId);
             userInfos.add(userInfo);
         }
         return userInfos;
@@ -256,4 +268,43 @@ public class ShiroServiceImpl implements ShiroService {
         map.put("routerData", routerDatas);
         return map;
     }
+
+    @Override
+    public Integer register(SysUser sysUser) {
+        // 按用户名获取salt值
+        ByteSource salt = ByteSource.Util.bytes(sysUser.getUsername());
+        // 获取加密后的密码
+        String newPs = new SimpleHash("MD5", sysUser.getPassword(), salt.toHex(),1).toHex();
+        sysUser.setCreateTime(new Date());
+        sysUser.setStatus((byte) 1);
+        sysUser.setPassword(newPs);
+        sysUser.setSalt(salt.toHex());
+        SysUser sysUser1 = sysUserMapper.selectByUserName(sysUser.getUsername());
+        if (sysUser1 == null) {
+            sysUserMapper.insertSelective(sysUser);
+            Long userId = sysUserMapper.selectIdByUserName(sysUser.getUsername());
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(userId);
+            sysUserRole.setRoleId((long) 4);
+            sysUserRoleMapper.insertSelective(sysUserRole);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public Integer updateRole(UserInfo userInfo) {
+        sysUserRoleMapper.deleteByUserId(userInfo.getUserId());
+        List<Long> roleIds = userInfo.getRoleId();
+        SysUserRole sysUserRole = new SysUserRole();
+        sysUserRole.setUserId(userInfo.getUserId());
+        for (int i = 0; i < roleIds.size(); i++) {
+            sysUserRole.setRoleId(roleIds.get(i));
+            sysUserRoleMapper.insertSelective(sysUserRole);
+            System.out.println(sysUserRole);
+        }
+        return 1;
+    }
 }
+

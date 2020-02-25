@@ -1,33 +1,27 @@
 package com.example.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+/**
+ * sys_user_role
+ * @author
+ */
+@Data
 public class SysUserRole implements Serializable {
     private Long Id;
+
+    /**
+     * 用户ID
+     */
     private Long userId;
+
+    /**
+     * 角色ID
+     */
     private Long roleId;
 
-    public Long getId() {
-        return Id;
-    }
+    private static final long serialVersionUID = 1L;
 
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
 }

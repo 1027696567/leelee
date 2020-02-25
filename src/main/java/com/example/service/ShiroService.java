@@ -45,4 +45,7 @@ public interface ShiroService {
     Map<String, List> routerDemo();
 
 
+    Integer register(SysUser sysUser);
+
+    Integer updateRole(UserInfo userInfo);
 }

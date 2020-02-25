@@ -13,5 +13,6 @@ public class UserInfo implements Serializable {
     private String realName;
     private String email;
     private String mobile;
+    private List<Long> roleId;
 
 }
